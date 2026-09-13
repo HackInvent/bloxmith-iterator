@@ -1,0 +1,79 @@
+{
+  "kind": "iterator",
+  "title": "Iterator",
+  "ports": {
+    "inputs": [
+      {
+        "id": 1,
+        "name": "liste",
+        "title": "Liste",
+        "accepts": [
+          "application/json",
+          "message/*"
+        ],
+        "multiplicity": "many",
+        "required": false,
+        "execution_requirement": "not_required_for_execution"
+      },
+      {
+        "id": 2,
+        "name": "trigger",
+        "title": "Trigger",
+        "accepts": [
+          "control/trigger",
+          "message/*"
+        ],
+        "multiplicity": "many",
+        "required": false,
+        "execution_requirement": "not_required_for_execution"
+      }
+    ],
+    "outputs": [
+      {
+        "id": 1,
+        "name": "item",
+        "title": "Item",
+        "emits": [
+          "message/*"
+        ],
+        "multiplicity": "many"
+      },
+      {
+        "id": 2,
+        "name": "index",
+        "title": "Index",
+        "emits": [
+          "message/*"
+        ],
+        "multiplicity": "many"
+      },
+      {
+        "id": 3,
+        "name": "done",
+        "title": "Done",
+        "emits": [
+          "message/*"
+        ],
+        "multiplicity": "many"
+      },
+      {
+        "id": 4,
+        "name": "next",
+        "title": "Next",
+        "emits": [
+          "control/trigger",
+          "message/*"
+        ],
+        "multiplicity": "many"
+      }
+    ]
+  },
+  "config": {},
+  "runtime": {
+    "initial_state": "waiting",
+    "runtime_executable": true,
+    "active_worker": true,
+    "centralized_executor": "generic",
+    "active_execution_policy": "on_trigger"
+  }
+}

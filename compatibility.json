@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "iterator",
+  "block_version": null,
+  "maintained_by": "HackInvent",
+  "source": {
+    "algorithm": "block-source-v1",
+    "sha256": "a8a373e707085ba5f7a20a79a6fd749cf5b7e153b987e60dd158ce43f559482a"
+  },
+  "bloxsmith_compatibility": [
+    "1.0.9"
+  ],
+  "tested_with_bloxsmith": "1.0.9",
+  "validations": [
+    {
+      "bloxsmith_version": "1.0.9",
+      "framework_commit": "c116ad3217a696d6408f9beb76def3c98f502b8f",
+      "framework_source_sha256": "9d1823215d180a49aea13bcbf1717e6bf80309ca7bc7197ddfca2f1bb47e9f6f",
+      "tested_at": "2026-09-13T12:54:12.362823+00:00",
+      "status": "passed",
+      "installation_mode": "bundled",
+      "suite_paths": [
+        "tests/F11.05_active_iterator_trigger.py",
+        "tests/F11.06_active_iterator_feedback_loop.py",
+        "tests/F11.19_active_list_seed_triggers_iterator.py",
+        "tests/F11.20_active_iterator_resume_from_text_trigger.py",
+        "tests/F11.21_active_iterator_text_seed_control.py",
+        "tests/F11.22_active_iterator_republished_list_resets_cursor.py",
+        "tests/F5.02_iterator_one_by_one.py",
+        "tests/F5.20_iterator_trigger_whitespace.py",
+        "tests/F8.14_iterator_block_inspector_panel_api.py"
+      ],
+      "suite_count": 9,
+      "report_sha256": "d0a22ea3f627edcddfe65e65673ad5e9f4411d0b901dd235a8bc50757095e076"
+    }
+  ]
+}
