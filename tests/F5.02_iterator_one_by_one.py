@@ -7,12 +7,12 @@
 # Created Date: 2024-05-14
 # -----------------------------------------------------------------------------
 
-"""F5.02 - Iterator item par item avec trigger.
+"""F5.02 - Item-by-item Iterator with a trigger.
 
-Le test connecte `list -> iterator`, ajoute un trigger initial, puis reboucle
-`iterator.next -> iterator.trigger` en feedback. Il vérifie que le feedback
-transporte bien le trigger, que le curseur avance item par item pendant le run
-et que le dernier item wrapper est publié.
+The test wires `list -> iterator`, adds an initial trigger, then loops
+`iterator.next -> iterator.trigger` back as feedback. It checks that the
+feedback really carries the trigger, that the cursor advances item by item
+during the run and that the last wrapper item is published.
 """
 
 # Test cases:
@@ -113,15 +113,15 @@ def main() -> None:
         iterator_item = run.get("output_values", {}).get("iterator-1:1", {})
         expect(
             json.loads(str(iterator_item.get("value") or "{}")) == {"item": "gamma"},
-            "Le dernier item wrapper attendu est {\"item\":\"gamma\"}.",
+            "The expected last wrapper item is {\"item\":\"gamma\"}.",
         )
         expect(iterator_item.get("content_type") == "application/json", "The wrapper item must be application/json.")
         expect(run.get("output_values", {}).get("iterator-1:2", {}).get("value") == "2", "L'index final attendu est 2.")
 
         logs = "\n".join(str(line) for line in run.get("logs", []))
-        expect("item 1/3 emis" in logs and "item 2/3 emis" in logs and "item 3/3 emis" in logs, "Le feedback doit déclencher les items suivants.")
+        expect("item 1/3 emis" in logs and "item 2/3 emis" in logs and "item 3/3 emis" in logs, "The feedback must trigger the following items.")
         display_value = str(run.get("worker_rows", {}).get("display-1", {}).get("received") or "")
-        expect("alpha" in display_value and "beta" in display_value and "gamma" in display_value, "Display doit recevoir les trois items.")
+        expect("alpha" in display_value and "beta" in display_value and "gamma" in display_value, "Display must receive the three items.")
     print("[ok] F5.02_iterator_one_by_one")
 
 

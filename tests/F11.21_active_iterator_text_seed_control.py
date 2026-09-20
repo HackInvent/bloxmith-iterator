@@ -112,7 +112,7 @@ def main() -> None:
     with isolated_server() as server:
         prepared = prepare_run_api(server, document(), runtime_mode="zeromq_active")
         run_id = str(prepared.get("run_id") or "")
-        expect(run_id, "prepare doit retourner un run_id.")
+        expect(run_id, "prepare must return a run_id.")
         prepared_nodes = prepared.get("graph", {}).get("nodes", [])
         text_id = next(str(node.get("id") or "") for node in prepared_nodes if node.get("kind") == "text")
         iterator_id = next(str(node.get("id") or "") for node in prepared_nodes if node.get("kind") == "iterator")
@@ -122,14 +122,14 @@ def main() -> None:
             server,
             run_id,
             lambda item: f"{iterator_id}:1" in (item.get("output_values") or {}),
-            "L'iterator actif n'a pas publie d'item apres publication du trigger texte.",
+            "The active iterator published no item after the text trigger was published.",
             timeout_sec=5,
         )
         expect(state.get("status") == "prepared", "The active runtime must stay loaded after a targeted publication.")
         item = state.get("output_values", {}).get(f"{iterator_id}:1", {})
         expect(json.loads(str(item.get("value") or "{}")) == {"item": list_node()["config"]["items"][0]}, "The first item must be emitted.")
         logs = "\n".join(state.get("node_logs", {}).get(iterator_id, []))
-        expect("item 1/2 emis" in logs, f"Iterator doit traiter le texte comme trigger actif. Logs: {logs}")
+        expect("item 1/2 emis" in logs, f"The Iterator must treat the text as an active trigger. Logs: {logs}")
 
         stop_run_api(server, run_id)
         wait_for_run_terminal(server, run_id, timeout_sec=10)

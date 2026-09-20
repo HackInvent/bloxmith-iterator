@@ -10,8 +10,8 @@
 """F11.19 - Targeted publication of a List to an active Iterator.
 
 The test prepares a `zeromq_active` run with no global trigger, publishes the `list`
-seed only, then checks that the'iterator reçoit la liste et émet le premier item.
-Il utilise un serveur isolé et ne modifie pas les données utilisateur.
+seed only, then checks that the iterator receives the list and emits the first item.
+It uses an isolated server and does not modify user data.
 """
 
 # Test cases:
@@ -118,7 +118,7 @@ def main() -> None:
         )
         prepared = prepare_run_api(server, document, runtime_mode="zeromq_active")
         run_id = str(prepared.get("run_id") or "")
-        expect(run_id, "prepare doit retourner un run_id.")
+        expect(run_id, "prepare must return a run_id.")
 
         active_control(server, run_id, "publish_seed", "list-1")
         state = wait_for_run_predicate(
@@ -137,7 +137,7 @@ def main() -> None:
         expect(json.loads(str(item.get("value") or "{}")) == {"item": "alpha"}, "The iterator must emit the first item.")
         expect(state.get("output_values", {}).get("iterator-1:2", {}).get("value") == "0", "L'index attendu est 0.")
         logs = "\n".join(state.get("node_logs", {}).get("iterator-1", []))
-        expect("declenchement initial" in logs, "Le déclenchement initial par liste doit être loggé.")
+        expect("declenchement initial" in logs, "The initial list-driven trigger must be logged.")
     print("[ok] F11.19_active_list_seed_triggers_iterator")
 
 

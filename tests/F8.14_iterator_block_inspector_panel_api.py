@@ -7,11 +7,11 @@
 # Created Date: 2024-06-20
 # -----------------------------------------------------------------------------
 
-"""F8.14 - UI modulaire du panneau inspecteur Iterator.
+"""F8.14 - Modular UI of the Iterator inspector panel.
 
-Le test démarre un serveur isolé, demande le rendu du panneau inspecteur
-`iterator` depuis `block.py`, puis vérifie que son CSS est exposé. Aucune
-donnée utilisateur n'est modifiée hors du serveur de test.
+The test starts an isolated server, renders the `iterator` inspector panel from
+`block.py`, then checks that its CSS is exposed. No user data is modified
+outside the test server.
 """
 
 # Test cases:
@@ -38,8 +38,8 @@ def main() -> None:
         node = {"id": "iterator-1", "kind": "iterator", "type": "iterator", "block_version": model["version"], "title": "Iterator"}
         rendered = surface_payload(server, model, node, "inspector_panel")
         html = str(rendered.get("html") or "")
-        expect("data-iterator-inspector-root" in html, "Le HTML inspecteur iterator doit venir du bloc.")
-        expect("liste" in html and "item" in html, "Le panneau iterator doit conserver l'aide utilisateur.")
+        expect("data-iterator-inspector-root" in html, "The iterator inspector HTML must come from the block.")
+        expect("liste" in html and "item" in html, "The iterator panel must keep the user help.")
         assets = rendered.get("assets") or []
         with urlopen(f"{server.base_url}/api/blocks/{key}/assets/{served(rendered, 'assets/css/inspector_panel.css')}", timeout=5) as response:
             body = response.read().decode("utf-8")
@@ -48,7 +48,7 @@ def main() -> None:
         modal = surface_payload(server, model, node, "modal")
         modal_html = str(modal.get("html") or "")
         modal_assets = modal.get("assets") or []
-        expect('data-block-runtime-refresh="autonomous"' in modal_html, "Le modal iterator doit gerer son refresh runtime.")
+        expect('data-block-runtime-refresh="autonomous"' in modal_html, "The iterator modal must own its runtime refresh.")
         with urlopen(f"{server.base_url}/api/blocks/{key}/assets/{served(modal, 'assets/js/block_modal.js')}", timeout=5) as response:
             modal_js = response.read().decode("utf-8")
         expect("export function mount" in modal_js, "Asset JS modal iterator non servi.")

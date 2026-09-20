@@ -7,11 +7,11 @@
 # Created Date: 2024-01-24
 # -----------------------------------------------------------------------------
 
-"""F11.05 - Iterator actif sur plusieurs triggers.
+"""F11.05 - Active Iterator on several triggers.
 
-Le test lance `list + 2 triggers -> iterator -> display` en `zeromq_active`.
-L'iterator doit rester une instance active, avancer deux fois son curseur et
-publier le dernier item.
+The test runs `list + 2 triggers -> iterator -> display` in `zeromq_active`.
+The iterator must stay one active instance, advance its cursor twice and
+publish the last item.
 """
 
 # Test cases:
@@ -99,9 +99,9 @@ def main() -> None:
         expect(json.loads(str(item.get("value") or "{}")) == {"item": "beta"}, "The last item must be beta.")
         expect(run.get("output_values", {}).get("iterator-1:2", {}).get("value") == "1", "The last index must be 1.")
         logs = "\n".join(run.get("node_logs", {}).get("iterator-1", []))
-        expect("policy on_trigger" in logs, "La policy on_trigger doit être loggée.")
+        expect("policy on_trigger" in logs, "The on_trigger policy must be logged.")
         expect("trigger batch 1" in logs and "trigger batch 2" in logs, "Iterator doit traiter deux triggers.")
-        expect(logs.count("[active-worker] iterator-1: instance ") == 1, "Iterator doit rester une seule instance.")
+        expect(logs.count("[active-worker] iterator-1: instance ") == 1, "The Iterator must stay a single instance.")
     print("[ok] F11.05_active_iterator_trigger")
 
 

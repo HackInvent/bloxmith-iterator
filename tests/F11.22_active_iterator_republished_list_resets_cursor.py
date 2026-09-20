@@ -141,7 +141,7 @@ def main() -> None:
     with isolated_server() as server:
         prepared = prepare_run_api(server, document(), runtime_mode="zeromq_active")
         run_id = str(prepared.get("run_id") or "")
-        expect(run_id, "prepare doit retourner un run_id.")
+        expect(run_id, "prepare must return a run_id.")
 
         active_control(server, run_id, "publish_seed", "list-1")
         active_control(server, run_id, "publish_seed", "trigger-1")
@@ -157,7 +157,7 @@ def main() -> None:
         item = state.get("output_values", {}).get("iterator-1:1", {})
         expect(json.loads(str(item.get("value") or "{}")) == {"item": "alpha"}, "A republished list must restart from the first item.")
         logs = "\n".join(state.get("node_logs", {}).get("iterator-1", []))
-        expect(logs.count("item 1/2 emis") >= 2, "Le premier item doit etre emis avant et apres republication de la liste.")
+        expect(logs.count("item 1/2 emis") >= 2, "The first item must be emitted before and after the list is republished.")
 
         stop_run_api(server, run_id)
         wait_for_run_terminal(server, run_id, timeout_sec=10)

@@ -7,12 +7,12 @@
 # Created Date: 2024-03-01
 # -----------------------------------------------------------------------------
 
-"""F11.06 - Feedback actif minimal en ZeroMQ active.
+"""F11.06 - Minimal active feedback in ZeroMQ active.
 
-Le test lance `list + trigger -> iterator -> display` avec
-`iterator.next --feedback--> iterator.trigger`. Il vérifie que le worker
-iterator reste actif, consomme son propre feedback borné et avance jusqu'au
-dernier item sans fallback centralisé.
+The test runs `list + trigger -> iterator -> display` with
+`iterator.next --feedback--> iterator.trigger`. It checks that the iterator
+worker stays active, consumes its own bounded feedback and advances to the
+last item without a centralized fallback.
 """
 
 # Test cases:
@@ -123,9 +123,9 @@ def main() -> None:
         item = run.get("output_values", {}).get("iterator-1:1", {})
         expect(json.loads(str(item.get("value") or "{}")) == {"item": "gamma"}, "The last emitted item must be gamma.")
         logs = "\n".join(run.get("node_logs", {}).get("iterator-1", []))
-        expect("policy on_trigger" in logs, "La policy on_trigger doit être loggée.")
-        expect(logs.count("trigger batch") >= 3, "Le feedback doit déclencher les batches iterator successifs.")
-        expect("fallback centralized" not in "\n".join(run.get("logs", [])), "Le run ne doit pas fallback centralisé.")
+        expect("policy on_trigger" in logs, "The on_trigger policy must be logged.")
+        expect(logs.count("trigger batch") >= 3, "The feedback must trigger the successive iterator batches.")
+        expect("fallback centralized" not in "\n".join(run.get("logs", [])), "The run must not fall back to centralized.")
     print("[ok] F11.06_active_iterator_feedback_loop")
 
 
