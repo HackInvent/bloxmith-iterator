@@ -21,32 +21,37 @@ donnée utilisateur n'est modifiée hors du serveur de test.
 
 from __future__ import annotations
 
+from urllib.parse import quote
 from urllib.request import urlopen
 
 from ui_smoke_common import expect, http_json, isolated_server
+from block_test_packages import install_test_package, release_key, surface_payload
 
 
 def main() -> None:
     with isolated_server() as server:
-        node = {"id": "iterator-1", "kind": "iterator", "type": "iterator", "title": "Iterator"}
-        rendered = http_json(server.base_url, "/api/blocks/iterator/inspector-panel", method="POST", payload={"node": node})
+        # Les surfaces sont des assets de release : le bundled kind n'en sert aucun.
+        model = install_test_package(server, "iterator")
+        key = quote(release_key(model), safe="")
+        served = lambda payload, suffix: next(
+            asset["path"] for asset in payload["assets"] if asset["path"].endswith(suffix))
+        node = {"id": "iterator-1", "kind": "iterator", "type": "iterator", "block_version": model["version"], "title": "Iterator"}
+        rendered = surface_payload(server, model, node, "inspector_panel")
         html = str(rendered.get("html") or "")
         expect("data-iterator-inspector-root" in html, "Le HTML inspecteur iterator doit venir du bloc.")
         expect("liste" in html and "item" in html, "Le panneau iterator doit conserver l'aide utilisateur.")
         assets = rendered.get("assets") or []
-        expect({"kind": "css", "path": "assets/css/inspector_panel.css"} in assets, "CSS iterator manquant.")
-        with urlopen(f"{server.base_url}/api/blocks/iterator/assets/assets/css/inspector_panel.css", timeout=5) as response:
+        with urlopen(f"{server.base_url}/api/blocks/{key}/assets/{served(rendered, 'assets/css/inspector_panel.css')}", timeout=5) as response:
             body = response.read().decode("utf-8")
         expect("iterator" in body.lower(), "Asset CSS inspecteur iterator non servi.")
 
-        modal = http_json(server.base_url, "/api/blocks/iterator/modal", method="POST", payload={"node": node})
+        modal = surface_payload(server, model, node, "modal")
         modal_html = str(modal.get("html") or "")
         modal_assets = modal.get("assets") or []
         expect('data-block-runtime-refresh="autonomous"' in modal_html, "Le modal iterator doit gerer son refresh runtime.")
-        expect({"kind": "js", "path": "assets/js/block_modal.js"} in modal_assets, "JS modal iterator manquant.")
-        with urlopen(f"{server.base_url}/api/blocks/iterator/assets/assets/js/block_modal.js", timeout=5) as response:
+        with urlopen(f"{server.base_url}/api/blocks/{key}/assets/{served(modal, 'assets/js/block_modal.js')}", timeout=5) as response:
             modal_js = response.read().decode("utf-8")
-        expect("registry.iterator" in modal_js, "Asset JS modal iterator non servi.")
+        expect("export function mount" in modal_js, "Asset JS modal iterator non servi.")
     print("[ok] F8.14_iterator_block_inspector_panel_api")
 
 
