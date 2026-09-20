@@ -51,7 +51,7 @@ class IteratorBlock(BlockDefinition):
             node_classes=["iterator-node"],
             replacements={
                 "title": node.get("title") or self.default_title(),
-                "summary": "Liste -> item par trigger",
+                "summary": "List -> one item per trigger",
                 "ports": "item, index, done, next",
             },
         )
@@ -129,7 +129,7 @@ class IteratorBlock(BlockDefinition):
         if reset_requested:
             logs.append(f"[iterator] {context.node_id}: nouvelle liste recue, curseur reinitialise.")
         if not has_trigger:
-            logs.append("[iterator-warn] Aucun trigger recu; MVP execute quand meme une passe pour rester compatible.")
+            logs.append("[iterator-warn] No trigger received; one pass still runs to stay compatible.")
         if exhausted:
             logs.append(f"[iterator] {context.node_id}: liste terminee ({len(items)} item(s)).")
         else:

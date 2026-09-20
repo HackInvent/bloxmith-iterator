@@ -64,8 +64,8 @@ def list_node() -> dict:
         ],
         "config": {
             "items": [
-                "Les couleurs des blocs doit changer lorsqu'ils sont en cours de run, et retourner a leur couleur initiale apres",
-                "Creation d'un mode de visualisation d'un texte pour mettre en evidence les premiers blocs et liens connectes au bloc selectionne",
+                "Block colors must change while they run, and return to their initial color afterwards",
+                "Create a text visualization mode to highlight the first blocks and links connected to the selected block",
             ]
         },
     }
@@ -125,9 +125,9 @@ def main() -> None:
             "L'iterator actif n'a pas publie d'item apres publication du trigger texte.",
             timeout_sec=5,
         )
-        expect(state.get("status") == "prepared", "Le runtime actif doit rester charge apres publication ciblee.")
+        expect(state.get("status") == "prepared", "The active runtime must stay loaded after a targeted publication.")
         item = state.get("output_values", {}).get(f"{iterator_id}:1", {})
-        expect(json.loads(str(item.get("value") or "{}")) == {"item": list_node()["config"]["items"][0]}, "Le premier item doit etre emis.")
+        expect(json.loads(str(item.get("value") or "{}")) == {"item": list_node()["config"]["items"][0]}, "The first item must be emitted.")
         logs = "\n".join(state.get("node_logs", {}).get(iterator_id, []))
         expect("item 1/2 emis" in logs, f"Iterator doit traiter le texte comme trigger actif. Logs: {logs}")
 

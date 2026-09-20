@@ -155,7 +155,7 @@ def main() -> None:
         state = wait_for_iterator_index(server, run_id, "0", "nouvelle liste recue, curseur reinitialise")
 
         item = state.get("output_values", {}).get("iterator-1:1", {})
-        expect(json.loads(str(item.get("value") or "{}")) == {"item": "alpha"}, "La liste republiee doit repartir au premier item.")
+        expect(json.loads(str(item.get("value") or "{}")) == {"item": "alpha"}, "A republished list must restart from the first item.")
         logs = "\n".join(state.get("node_logs", {}).get("iterator-1", []))
         expect(logs.count("item 1/2 emis") >= 2, "Le premier item doit etre emis avant et apres republication de la liste.")
 

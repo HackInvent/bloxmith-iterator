@@ -7,10 +7,10 @@
 # Created Date: 2024-04-07
 # -----------------------------------------------------------------------------
 
-"""F11.19 - Publication ciblée d'une List vers un Iterator actif.
+"""F11.19 - Targeted publication of a List to an active Iterator.
 
-Le test prépare un run `zeromq_active` sans trigger global, publie uniquement le seed
-`list`, puis vérifie que l'iterator reçoit la liste et émet le premier item.
+The test prepares a `zeromq_active` run with no global trigger, publishes the `list`
+seed only, then checks that the'iterator reçoit la liste et émet le premier item.
 Il utilise un serveur isolé et ne modifie pas les données utilisateur.
 """
 
@@ -125,16 +125,16 @@ def main() -> None:
             server,
             run_id,
             lambda item: "iterator-1:1" in (item.get("output_values") or {}),
-            "L'iterator actif n'a pas publié d'item après publication de la liste.",
+            "The active iterator published no item after the list was published.",
             timeout_sec=5,
         )
-        expect(state.get("status") == "prepared", "Le runtime actif doit rester charge apres publication ciblee.")
+        expect(state.get("status") == "prepared", "The active runtime must stay loaded after a targeted publication.")
         stop_run_api(server, run_id)
         final_state = wait_for_run_terminal(server, run_id, timeout_sec=10)
         state = get_run_api(server, run_id) or final_state
 
         item = state.get("output_values", {}).get("iterator-1:1", {})
-        expect(json.loads(str(item.get("value") or "{}")) == {"item": "alpha"}, "L'iterator doit émettre le premier item.")
+        expect(json.loads(str(item.get("value") or "{}")) == {"item": "alpha"}, "The iterator must emit the first item.")
         expect(state.get("output_values", {}).get("iterator-1:2", {}).get("value") == "0", "L'index attendu est 0.")
         logs = "\n".join(state.get("node_logs", {}).get("iterator-1", []))
         expect("declenchement initial" in logs, "Le déclenchement initial par liste doit être loggé.")

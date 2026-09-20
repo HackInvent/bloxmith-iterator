@@ -107,15 +107,15 @@ def main() -> None:
         )
         created = create_run_api(server, document)
         run = wait_for_run_terminal(server, str(created.get("run_id") or ""), timeout_sec=20)
-        expect(run.get("status") == "success", "Le run iterator doit réussir.")
-        expect(run.get("iterator_cursors", {}).get("iterator-1") == 3, "Le curseur iterator doit atteindre 3 après les triggers feedback.")
-        expect("feedback_iterations" not in run, "Le run ne doit plus exposer de compteur feedback.")
+        expect(run.get("status") == "success", "The iterator run must succeed.")
+        expect(run.get("iterator_cursors", {}).get("iterator-1") == 3, "The iterator cursor must reach 3 after the feedback triggers.")
+        expect("feedback_iterations" not in run, "The run must no longer expose a feedback counter.")
         iterator_item = run.get("output_values", {}).get("iterator-1:1", {})
         expect(
             json.loads(str(iterator_item.get("value") or "{}")) == {"item": "gamma"},
             "Le dernier item wrapper attendu est {\"item\":\"gamma\"}.",
         )
-        expect(iterator_item.get("content_type") == "application/json", "L'item wrapper doit être application/json.")
+        expect(iterator_item.get("content_type") == "application/json", "The wrapper item must be application/json.")
         expect(run.get("output_values", {}).get("iterator-1:2", {}).get("value") == "2", "L'index final attendu est 2.")
 
         logs = "\n".join(str(line) for line in run.get("logs", []))

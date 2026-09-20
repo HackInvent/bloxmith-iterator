@@ -51,8 +51,8 @@ def list_node() -> dict:
         ],
         "config": {
             "items": [
-                "Les couleurs des blocs doit changer lorsqu'ils sont en cours de run, et retourner a leur couleur initiale apres",
-                "Creation d'un mode de visualisation d'un texte pour mettre en evidence les premiers blocs et liens connectes au bloc selectionne",
+                "Block colors must change while they run, and return to their initial color afterwards",
+                "Create a text visualization mode to highlight the first blocks and links connected to the selected block",
             ]
         },
     }
@@ -125,8 +125,8 @@ def main() -> None:
     with isolated_server() as server:
         created = create_run_api(server, document(), runtime_mode="zeromq_active")
         source_run = wait_for_run_terminal(server, str(created.get("run_id") or ""), timeout_sec=20)
-        expect(source_run.get("status") == "success", "Le run actif initial doit reussir.")
-        expect(source_run.get("iterator_cursors", {}).get("iterator-1") == 1, "Le run initial doit declencher un item.")
+        expect(source_run.get("status") == "success", "The initial active run must succeed.")
+        expect(source_run.get("iterator_cursors", {}).get("iterator-1") == 1, "The initial run must trigger one item.")
 
         resumed_created = resume_from_node_api(
             server,
@@ -138,12 +138,12 @@ def main() -> None:
         logs = "\n".join(resumed.get("logs", []))
         item = resumed.get("output_values", {}).get("iterator-1:1", {})
 
-        expect(resumed.get("status") == "success", "La reprise depuis le trigger texte doit reussir.")
-        expect(resumed.get("runtime_mode") == "zeromq_active", "La reprise doit rester en runtime actif.")
-        expect(resumed.get("iterator_cursors", {}).get("iterator-1") == 1, "Iterator doit avancer d'un pas en reprise.")
-        expect(json.loads(str(item.get("value") or "{}")) == {"item": list_node()["config"]["items"][0]}, "Le premier item doit etre republie.")
-        expect("trigger batch 1" in logs, "Iterator doit traiter le texte comme trigger en reprise.")
-        expect("trigger(s) ignore" not in logs, "Le trigger texte ne doit pas etre ignore.")
+        expect(resumed.get("status") == "success", "Resuming from the text trigger must succeed.")
+        expect(resumed.get("runtime_mode") == "zeromq_active", "Resuming must stay in active runtime.")
+        expect(resumed.get("iterator_cursors", {}).get("iterator-1") == 1, "The iterator must advance one step on resume.")
+        expect(json.loads(str(item.get("value") or "{}")) == {"item": list_node()["config"]["items"][0]}, "The first item must be republished.")
+        expect("trigger batch 1" in logs, "The iterator must treat the text as a trigger on resume.")
+        expect("trigger(s) ignore" not in logs, "The text trigger must not be ignored.")
     print("[ok] F11.20_active_iterator_resume_from_text_trigger")
 
 
