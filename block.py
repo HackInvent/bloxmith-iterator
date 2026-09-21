@@ -127,18 +127,18 @@ class IteratorBlock(BlockDefinition):
 
         logs = []
         if reset_requested:
-            logs.append(f"[iterator] {context.node_id}: nouvelle liste recue, curseur reinitialise.")
+            logs.append(f"[iterator] {context.node_id}: new list received, cursor reset.")
         if not has_trigger:
             logs.append("[iterator-warn] No trigger received; one pass still runs to stay compatible.")
         if exhausted:
-            logs.append(f"[iterator] {context.node_id}: liste terminee ({len(items)} item(s)).")
+            logs.append(f"[iterator] {context.node_id}: list finished ({len(items)} item(s)).")
         else:
-            logs.append(f"[iterator] {context.node_id}: item {cursor + 1}/{len(items)} emis.")
+            logs.append(f"[iterator] {context.node_id}: item {cursor + 1}/{len(items)} emitted.")
             if has_next:
-                logs.append(f"[iterator] {context.node_id}: next emis, item suivant disponible.")
+                logs.append(f"[iterator] {context.node_id}: next emitted, the following item is available.")
         logs.append(
             f"[done] Iterator {context.node_id}: {len(items)} item(s), "
-            f"curseur={next_cursor}, item courant={cursor if not exhausted else 'termine'}."
+            f"cursor={next_cursor}, current item={cursor if not exhausted else 'finished'}."
         )
         return BlockRuntimeResult(
             status="success",

@@ -109,7 +109,7 @@ def main() -> None:
         last_item = run.get("output_values", {}).get("iterator-1:1", {}).get("value") or ""
         expect("alpha" in str(last_item), "Iterator item must be published.")
         logs = "\n".join(str(line) for line in run.get("logs", []))
-        expect("Aucun trigger recu" not in logs, "Whitespace trigger must not be treated as missing.")
+        expect("No trigger received" not in logs, "Whitespace trigger must not be treated as missing.")
     print("[ok] F5.20_iterator_trigger_whitespace")
 
 

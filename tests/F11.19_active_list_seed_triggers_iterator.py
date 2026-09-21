@@ -137,7 +137,7 @@ def main() -> None:
         expect(json.loads(str(item.get("value") or "{}")) == {"item": "alpha"}, "The iterator must emit the first item.")
         expect(state.get("output_values", {}).get("iterator-1:2", {}).get("value") == "0", "L'index attendu est 0.")
         logs = "\n".join(state.get("node_logs", {}).get("iterator-1", []))
-        expect("declenchement initial" in logs, "The initial list-driven trigger must be logged.")
+        expect("initial trigger" in logs, "The initial list-driven trigger must be logged.")
     print("[ok] F11.19_active_list_seed_triggers_iterator")
 
 

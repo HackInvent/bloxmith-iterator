@@ -129,7 +129,7 @@ def main() -> None:
         item = state.get("output_values", {}).get(f"{iterator_id}:1", {})
         expect(json.loads(str(item.get("value") or "{}")) == {"item": list_node()["config"]["items"][0]}, "The first item must be emitted.")
         logs = "\n".join(state.get("node_logs", {}).get(iterator_id, []))
-        expect("item 1/2 emis" in logs, f"The Iterator must treat the text as an active trigger. Logs: {logs}")
+        expect("item 1/2 emitted" in logs, f"The Iterator must treat the text as an active trigger. Logs: {logs}")
 
         stop_run_api(server, run_id)
         wait_for_run_terminal(server, run_id, timeout_sec=10)

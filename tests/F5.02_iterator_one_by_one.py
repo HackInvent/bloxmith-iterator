@@ -119,7 +119,7 @@ def main() -> None:
         expect(run.get("output_values", {}).get("iterator-1:2", {}).get("value") == "2", "L'index final attendu est 2.")
 
         logs = "\n".join(str(line) for line in run.get("logs", []))
-        expect("item 1/3 emis" in logs and "item 2/3 emis" in logs and "item 3/3 emis" in logs, "The feedback must trigger the following items.")
+        expect("item 1/3 emitted" in logs and "item 2/3 emitted" in logs and "item 3/3 emitted" in logs, "The feedback must trigger the following items.")
         display_value = str(run.get("worker_rows", {}).get("display-1", {}).get("received") or "")
         expect("alpha" in display_value and "beta" in display_value and "gamma" in display_value, "Display must receive the three items.")
     print("[ok] F5.02_iterator_one_by_one")

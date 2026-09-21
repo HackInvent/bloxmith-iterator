@@ -145,19 +145,19 @@ def main() -> None:
 
         active_control(server, run_id, "publish_seed", "list-1")
         active_control(server, run_id, "publish_seed", "trigger-1")
-        wait_for_iterator_index(server, run_id, "0", "item 1/2 emis")
+        wait_for_iterator_index(server, run_id, "0", "item 1/2 emitted")
 
         active_control(server, run_id, "publish_seed", "trigger-1")
-        wait_for_iterator_index(server, run_id, "1", "item 2/2 emis")
+        wait_for_iterator_index(server, run_id, "1", "item 2/2 emitted")
 
         active_control(server, run_id, "publish_seed", "list-1")
         active_control(server, run_id, "publish_seed", "trigger-1")
-        state = wait_for_iterator_index(server, run_id, "0", "nouvelle liste recue, curseur reinitialise")
+        state = wait_for_iterator_index(server, run_id, "0", "new list received, cursor reset")
 
         item = state.get("output_values", {}).get("iterator-1:1", {})
         expect(json.loads(str(item.get("value") or "{}")) == {"item": "alpha"}, "A republished list must restart from the first item.")
         logs = "\n".join(state.get("node_logs", {}).get("iterator-1", []))
-        expect(logs.count("item 1/2 emis") >= 2, "The first item must be emitted before and after the list is republished.")
+        expect(logs.count("item 1/2 emitted") >= 2, "The first item must be emitted before and after the list is republished.")
 
         stop_run_api(server, run_id)
         wait_for_run_terminal(server, run_id, timeout_sec=10)
