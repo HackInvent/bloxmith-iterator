@@ -51,7 +51,7 @@ class IteratorBlock(BlockDefinition):
             node_classes=["iterator-node"],
             replacements={
                 "title": node.get("title") or self.default_title(),
-                "summary": "List -> one item per trigger",
+                "summary": self.translate("block.iterator.card_summary", fallback="List -> one item per trigger"),
                 "ports": "item, index, done, next",
             },
         )

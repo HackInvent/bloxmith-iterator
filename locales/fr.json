@@ -1,0 +1,7 @@
+{
+  "block.iterator.model.title": "Itérateur",
+  "block.iterator.pill": "Itérateur",
+  "block.iterator.help_intro": "L'entrée liste attend une liste JSON. Avec un bloc Liste, le format attendu est :",
+  "block.iterator.help_outputs": "L'itérateur émet chaque entrée complète sur sa sortie item.",
+  "block.iterator.card_summary": "Liste -> un item par trigger"
+}
