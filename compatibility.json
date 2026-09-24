@@ -32,6 +32,27 @@
       ],
       "suite_count": 9,
       "report_sha256": "29282beae1f9994e2a9e986ea52a9ec6618058e35bf31ec269b43147769f0279"
+    },
+    {
+      "bloxsmith_version": "1.0.9",
+      "framework_commit": "ddb6d0f054d92e75b9ff1cdb9e9ee16457c5f962",
+      "framework_source_sha256": "ce69a55fa289983c81e579c5beb96ff22ae8911f8efabb602c4054e639a3061f",
+      "tested_at": "2026-09-22T00:16:57.397945+00:00",
+      "status": "passed",
+      "installation_mode": "bundled",
+      "suite_paths": [
+        "tests/F11.05_active_iterator_trigger.py",
+        "tests/F11.06_active_iterator_feedback_loop.py",
+        "tests/F11.19_active_list_seed_triggers_iterator.py",
+        "tests/F11.20_active_iterator_resume_from_text_trigger.py",
+        "tests/F11.21_active_iterator_text_seed_control.py",
+        "tests/F11.22_active_iterator_republished_list_resets_cursor.py",
+        "tests/F5.02_iterator_one_by_one.py",
+        "tests/F5.20_iterator_trigger_whitespace.py",
+        "tests/F8.14_iterator_block_inspector_panel_api.py"
+      ],
+      "suite_count": 9,
+      "report_sha256": "5edfda3ee15686cc4faddd951b973fa1a6ae9a0aaa375aa9d30bfdc062ad1dd7"
     }
   ]
 }
